@@ -1,0 +1,40 @@
+/* Simple +/-/* expression language; parser evaluates constant expressions on the fly*/
+import java_cup.runtime.*;
+
+parser code {:
+    // Connect this parser to a scanner!
+    scanner s;
+    Parser(scanner s){ this.s=s; }
+:}
+
+/* define how to connect to the scanner! */
+init with {: scanner.init();              :};
+scan with {: return getScanner().next_token(); :};
+
+/* Non terminals */
+non terminal Character  CHARRACT;
+non terminal expr_list;
+non terminal expr_part;
+non terminal  expr;
+non terminal     digit;
+
+/* Terminals (tokens returned by the scanner). */
+terminal            SEMI, PLUS, MINUS, TIMES, UMINUS, LPAREN, RPAREN;
+terminal Integer    NUMBER;        // our scanner provides numbers as integers
+
+/* Precedences */
+precedence left PLUS, MINUS;
+precedence left TIMES;
+precedence left UMINUS;
+
+
+/**//* The grammar */
+expr_list ::= CHARRACT:c  expr:e SEMI
+            {: RESULT = c + e; :}
+          ;
+expr_part ::=  expr:num1  expr:num12  expr:num13  expr:num14  expr:num15  expr:num16  expr:num17  expr:num18  expr:num19 
+          {: RESULT = (""+num11.intValue()+ num12.intValue()+ num13.intValue()+ num14.intValue()+ num15.intValue()+ num16.intValue()+ nnum1.intValue()+ num18.intValue()+ num19.intValue()  ); :}             
+          ;
+ expr ::= digit
+          ;
+
